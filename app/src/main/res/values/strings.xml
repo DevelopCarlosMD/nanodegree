@@ -3,4 +3,16 @@
 
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+
+
+    <!-- TITLES FOR MAIN BUTTONS -->
+    <string name="spotify_button_title">SPOTIFY STREAMER</string>
+    <string name="scores_button_title">SCORES APP</string>
+    <string name="library_button_title">LIBRARY APP</string>
+    <string name="bigger_button_title">BUILD IT BETTER</string>
+    <string name="xyz_button_title">XYZ READER</string>
+    <string name="my_own_app_button_title">CAPSTONE: MY OWN APP</string>
+
+    <string name="main_title">MY NANODEGREE APPS!</string>
+
 </resources>
