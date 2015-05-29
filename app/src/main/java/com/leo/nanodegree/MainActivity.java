@@ -4,6 +4,10 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Toast;
+
+import com.leo.nanodegree.utils.Utils;
 
 
 public class MainActivity extends Activity {
@@ -34,5 +38,32 @@ public class MainActivity extends Activity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+
+    //TODO: Create the string messages in string file
+
+    public void onStartSpotifyStreamer(View view) {
+        Utils.showToast(MainActivity.this,"Spotify Streamer", Toast.LENGTH_SHORT);
+    }
+
+    public void onStartScoresApp(View view) {
+        Utils.showToast(MainActivity.this,"Scores App", Toast.LENGTH_SHORT);
+    }
+
+    public void onStartLibraryApp(View view) {
+        Utils.showToast(MainActivity.this,"Library App", Toast.LENGTH_SHORT);
+    }
+
+    public void onStartBuildItBetter(View view) {
+        Utils.showToast(MainActivity.this,"Build it better", Toast.LENGTH_SHORT);
+    }
+
+    public void onStartXYZReader(View view) {
+        Utils.showToast(MainActivity.this,"XYZ Reader", Toast.LENGTH_SHORT);
+    }
+
+    public void onStartMyOwnApp(View view) {
+        Utils.showToast(MainActivity.this,"My own app", Toast.LENGTH_SHORT);
     }
 }
