@@ -1,16 +1,19 @@
-package com.leo.nanodegree;
+package com.leo.nanodegree.ui;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import com.leo.nanodegree.R;
 import com.leo.nanodegree.utils.Utils;
 
 
-public class MainActivity extends Activity {
+public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,7 +47,8 @@ public class MainActivity extends Activity {
     //TODO: Create the string messages in string file
 
     public void onStartSpotifyStreamer(View view) {
-        Utils.showToast(MainActivity.this,"Spotify Streamer", Toast.LENGTH_SHORT);
+        Intent spotifySearch = new Intent(MainActivity.this,SpotifyStreamerActivity.class);
+        startActivity(spotifySearch);
     }
 
     public void onStartScoresApp(View view) {
