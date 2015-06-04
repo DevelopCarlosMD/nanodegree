@@ -12,6 +12,8 @@
         android:layout_height="wrap_content"
         android:id="@+id/search_spotify_streamer"
         android:hint="@string/artist_searcher_hint_text"
+        android:imeOptions="actionSearch"
+        android:inputType="text"
         />
 
     <ListView

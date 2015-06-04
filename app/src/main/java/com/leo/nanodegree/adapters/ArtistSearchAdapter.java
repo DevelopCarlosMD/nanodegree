@@ -1,6 +1,8 @@
 package com.leo.nanodegree.adapters;
 
 import android.media.Image;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,8 +13,8 @@ import android.widget.TextView;
 import com.leo.nanodegree.R;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.zip.Inflater;
 
 import kaaes.spotify.webapi.android.models.AlbumSimple;
 
@@ -28,6 +30,7 @@ public class ArtistSearchAdapter extends BaseAdapter {
     }
 
     public ArtistSearchAdapter(){
+        artistAlbums = new ArrayList<>();
     }
 
 
@@ -69,13 +72,19 @@ public class ArtistSearchAdapter extends BaseAdapter {
     }
 
     public void setDataToAdapter(List<AlbumSimple> artistAlbums){
-        if(artistAlbums != null && artistAlbums.size() > 0)
-            artistAlbums.clear();
-        this.artistAlbums = artistAlbums;
-        notifyDataSetChanged();
+        clearAllData();
+        if(artistAlbums != null) {
+            this.artistAlbums.addAll(artistAlbums);
+            notifyDataSetChanged();
+        }
     }
     public static class ArtistSearchHolder {
         public ImageView artistImage;
         public TextView artistName;
+    }
+
+    public void clearAllData(){
+        if(this.artistAlbums != null && this.artistAlbums.size() > 0)
+            this.artistAlbums.clear();
     }
 }

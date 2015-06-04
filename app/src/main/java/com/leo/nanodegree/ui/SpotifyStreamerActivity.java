@@ -41,6 +41,11 @@ public class SpotifyStreamerActivity extends AppCompatActivity {
     }
 
     private void addSpotifyArtistSearchFragment(){
-        getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, SpotifyArtistSearchFragment.newInstance()).commit();
+
+        SpotifyArtistSearchFragment spotifyArtistSearchFragment = (SpotifyArtistSearchFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_container);
+        if(spotifyArtistSearchFragment == null)
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, SpotifyArtistSearchFragment.newInstance()).commit();
+        else
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,spotifyArtistSearchFragment).commit();
     }
 }
