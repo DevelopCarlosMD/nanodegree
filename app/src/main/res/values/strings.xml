@@ -14,5 +14,13 @@
     <string name="my_own_app_button_title">CAPSTONE: MY OWN APP</string>
 
     <string name="main_title">MY NANODEGREE APPS!</string>
+    <string name="title_activity_spotify_streamer">Spotify Streamer</string>
 
+
+    <!-- Spotify Streamer Access Token -->
+    <string name="spotify_access_token">a6d561b259814c2385b9170027c14afa</string>
+
+    <!-- Spotify Streamer strings -->
+    <string name="artist_searcher_hint_text">Search</string>
+    <string name="title_activity_top_artist_songs">TopArtistSongsActivity</string>
 </resources>
