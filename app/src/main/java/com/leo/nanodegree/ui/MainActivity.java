@@ -1,6 +1,5 @@
 package com.leo.nanodegree.ui;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -47,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
     //TODO: Create the string messages in string file
 
     public void onStartSpotifyStreamer(View view) {
-        Intent spotifySearch = new Intent(MainActivity.this,SpotifyStreamerActivity.class);
+        Intent spotifySearch = new Intent(MainActivity.this,SpotifySearcherActivity.class);
         startActivity(spotifySearch);
     }
 

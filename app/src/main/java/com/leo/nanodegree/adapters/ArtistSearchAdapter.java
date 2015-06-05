@@ -1,8 +1,5 @@
 package com.leo.nanodegree.adapters;
 
-import android.media.Image;
-import android.os.Handler;
-import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,75 +13,80 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.List;
 
-import kaaes.spotify.webapi.android.models.AlbumSimple;
+
+import kaaes.spotify.webapi.android.models.Artist;
+
+
 
 /**
  * Created by leo on 6/2/15.
  */
 public class ArtistSearchAdapter extends BaseAdapter {
 
-    private List<AlbumSimple> artistAlbums;
+    private List<Artist> artists;
 
-    public ArtistSearchAdapter(List<AlbumSimple> artistAlbums) {
-        this.artistAlbums = artistAlbums;
+    public ArtistSearchAdapter(List<Artist> artists) {
+        this.artists = artists;
     }
 
     public ArtistSearchAdapter(){
-        artistAlbums = new ArrayList<>();
+        artists = new ArrayList<>();
     }
-
 
     @Override
     public int getCount() {
-        return artistAlbums == null?0:artistAlbums.size();
+        return artists == null?0:artists.size();
     }
 
     @Override
     public Object getItem(int i) {
-        return artistAlbums.get(i);
+        return artists.get(i);
     }
 
     @Override
     public long getItemId(int i) {
-        return artistAlbums.indexOf(artistAlbums.get(i));
+        return artists.indexOf(artists.get(i));
     }
 
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
 
-        ArtistSearchHolder artistSearchHolder = new ArtistSearchHolder();
+        artistsSearchHolder artistsSearchHolder = new artistsSearchHolder();
         if (view == null) {
             view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.spotify_streamer_row_layout,viewGroup,false);
-            artistSearchHolder.artistImage = (ImageView) view.findViewById(R.id.artist_image);
-            artistSearchHolder.artistName = (TextView) view.findViewById(R.id.artist_name);
-            view.setTag(artistSearchHolder);
+            artistsSearchHolder.artistsImage = (ImageView) view.findViewById(R.id.artist_image);
+            artistsSearchHolder.artistsName = (TextView) view.findViewById(R.id.artist_name);
+            view.setTag(artistsSearchHolder);
         }else{
-            artistSearchHolder = (ArtistSearchHolder)view.getTag();
+            artistsSearchHolder = (artistsSearchHolder)view.getTag();
         }
 
-        Picasso.with(viewGroup.getContext())
-                .load(artistAlbums.get(i).images.get(1).url)
-                .resize(150, 150)
-                .into(artistSearchHolder.artistImage);
-        artistSearchHolder.artistName.setText(artistAlbums.get(i).name);
+        if(artists.get(i).images.size() >0) {
+            Picasso.with(viewGroup.getContext())
+                    .load(artists.get(i).images.get(1).url)
+                    .resize(200, 200)
+                    .into(artistsSearchHolder.artistsImage);
+        }
+        artistsSearchHolder.artistsName.setText(artists.get(i).name);
 
         return view;
     }
 
-    public void setDataToAdapter(List<AlbumSimple> artistAlbums){
+    public void setDataToAdapter(List<Artist> artists){
         clearAllData();
-        if(artistAlbums != null) {
-            this.artistAlbums.addAll(artistAlbums);
+        if(artists != null) {
+          this.artists.addAll(artists);
             notifyDataSetChanged();
         }
     }
-    public static class ArtistSearchHolder {
-        public ImageView artistImage;
-        public TextView artistName;
-    }
 
     public void clearAllData(){
-        if(this.artistAlbums != null && this.artistAlbums.size() > 0)
-            this.artistAlbums.clear();
+        if(this.artists != null && this.artists.size() > 0)
+            this.artists.clear();
+    }
+
+    public static class artistsSearchHolder {
+        public ImageView artistsImage;
+        public TextView artistsName;
     }
 }

@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.leo.nanodegree" >
 
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -19,8 +19,12 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.SpotifyStreamerActivity"
+            android:name=".ui.SpotifySearcherActivity"
             android:label="@string/title_activity_spotify_streamer" >
+        </activity>
+        <activity
+            android:name=".ui.TopArtistSongsActivity"
+            android:label="@string/title_activity_top_artist_songs" >
         </activity>
     </application>
 

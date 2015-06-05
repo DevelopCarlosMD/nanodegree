@@ -9,13 +9,12 @@ import android.view.MenuItem;
 import com.leo.nanodegree.R;
 import com.leo.nanodegree.fragments.SpotifyArtistSearchFragment;
 
-public class SpotifyStreamerActivity extends AppCompatActivity {
+public class SpotifySearcherActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_spotify_streamer);
-        addSpotifyArtistSearchFragment();
     }
 
     @Override
@@ -40,12 +39,5 @@ public class SpotifyStreamerActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private void addSpotifyArtistSearchFragment(){
 
-        SpotifyArtistSearchFragment spotifyArtistSearchFragment = (SpotifyArtistSearchFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_container);
-        if(spotifyArtistSearchFragment == null)
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, SpotifyArtistSearchFragment.newInstance()).commit();
-        else
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,spotifyArtistSearchFragment).commit();
-    }
 }
