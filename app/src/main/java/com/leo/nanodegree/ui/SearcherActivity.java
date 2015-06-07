@@ -5,7 +5,7 @@ import android.support.annotation.Nullable;
 
 import com.leo.nanodegree.R;
 
-public class SpotifySearcherActivity extends SpotifyBaseActivity {
+public class SearcherActivity extends BaseActivity {
 
     @Override
     int contentViewId() {

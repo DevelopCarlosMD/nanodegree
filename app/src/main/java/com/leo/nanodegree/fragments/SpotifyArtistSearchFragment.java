@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -35,6 +36,7 @@ import retrofit.client.Response;
 public class SpotifyArtistSearchFragment extends Fragment implements AdapterView.OnItemClickListener {
 
     private ArtistSearchAdapter artistSearchAdapter;
+    private TextView errorText;
 
     public static SpotifyArtistSearchFragment newInstance() {
         return new SpotifyArtistSearchFragment();
@@ -65,11 +67,11 @@ public class SpotifyArtistSearchFragment extends Fragment implements AdapterView
         ListView artistAlbumsList = (ListView) view.findViewById(R.id.artist_search_list);
         artistAlbumsList.setAdapter(artistSearchAdapter);
         artistAlbumsList.setOnItemClickListener(SpotifyArtistSearchFragment.this);
-        startArtistSearch((EditText) view.findViewById(R.id.search_spotify_streamer),view.getContext());
-
+        startArtistSearch((EditText) view.findViewById(R.id.search_spotify_streamer), view.getContext());
+        errorText = (TextView) view.findViewById(R.id.artist_search_error_text);
     }
-    
-    private void searchArtistAlbums(Context context,String artist) {
+
+    private void searchArtistAlbums(Context context, String artist) {
 
         final ProgressDialog progressDialog = new ProgressDialog(context);
         progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
@@ -83,15 +85,28 @@ public class SpotifyArtistSearchFragment extends Fragment implements AdapterView
             @Override
             public void success(final ArtistsPager artistsPager, Response response) {
 
-                if (response.getStatus() == 200 && artistsPager != null && getActivity() != null) {
-                    getActivity().runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            progressDialog.dismiss();
-                            artistSearchAdapter.setItems(artistsPager.artists.items);
+                if (response.getStatus() == 200) {
+                    if (artistsPager != null && getActivity() != null) {
+                        if (artistsPager.artists.items.size() > 0) {
+                            getActivity().runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    errorText.setVisibility(View.GONE);
+                                    progressDialog.dismiss();
+                                    artistSearchAdapter.setItems(artistsPager.artists.items);
 
-                        }/**/
-                    });
+                                }/**/
+                            });
+                        } else {
+                            getActivity().runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    progressDialog.dismiss();
+                                    errorText.setVisibility(View.VISIBLE);
+                                }
+                            });
+                        }
+                    }
                 }
             }
 
@@ -99,6 +114,7 @@ public class SpotifyArtistSearchFragment extends Fragment implements AdapterView
             public void failure(RetrofitError error) {
                 progressDialog.dismiss();
                 error.printStackTrace();
+                errorText.setVisibility(View.VISIBLE);
             }
         });
     }
@@ -110,7 +126,7 @@ public class SpotifyArtistSearchFragment extends Fragment implements AdapterView
 
                 switch (actionId) {
                     case EditorInfo.IME_ACTION_SEARCH:
-                        searchArtistAlbums(context,artistSearcher.getText().toString());
+                        searchArtistAlbums(context, artistSearcher.getText().toString());
                         Utils.hideKeyBoard(textView);
                         return true;
                     default:

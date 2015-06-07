@@ -26,5 +26,6 @@
     <dimen name="artist_top_tracks_container_info_size">90dp</dimen>
     <dimen name="artist_info_height">45dp</dimen>
     <dimen name="artist_info_padding">3dp</dimen>
+    <dimen name="error_text_size">13pt</dimen>
 
 </resources>

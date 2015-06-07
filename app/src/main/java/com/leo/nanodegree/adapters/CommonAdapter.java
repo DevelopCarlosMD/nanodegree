@@ -9,15 +9,15 @@ import java.util.List;
 /**
  * Created by leo on 6/6/15.
  */
-public abstract class SpotifyBaseAdapter<T> extends BaseAdapter {
+public abstract class CommonAdapter<T> extends android.widget.BaseAdapter {
 
     private List<T> items;
 
-    public SpotifyBaseAdapter(List<T> items) {
+    public CommonAdapter(List<T> items) {
         this.items = items;
     }
 
-    public SpotifyBaseAdapter() {
+    public CommonAdapter() {
         this.items = new ArrayList<>();
     }
 

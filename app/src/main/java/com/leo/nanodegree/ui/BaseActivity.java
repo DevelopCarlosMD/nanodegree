@@ -11,7 +11,7 @@ import android.view.View;
 
 import com.leo.nanodegree.R;
 
-public abstract class SpotifyBaseActivity extends AppCompatActivity {
+public abstract class BaseActivity extends AppCompatActivity {
 
     protected Toolbar toolbar;
 

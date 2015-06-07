@@ -15,7 +15,7 @@ import kaaes.spotify.webapi.android.models.Track;
 /**
  * Created by leo on 6/4/15.
  */
-public class TopArtistTracksAdapter extends SpotifyBaseAdapter<Track> {
+public class TopArtistTracksAdapter extends CommonAdapter<Track> {
 
     @Override
     public View getView(int i, View view, @Nullable ViewGroup viewGroup) {
