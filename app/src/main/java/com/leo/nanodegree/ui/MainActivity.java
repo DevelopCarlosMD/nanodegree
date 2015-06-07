@@ -10,7 +10,7 @@ import com.leo.nanodegree.R;
 import com.leo.nanodegree.utils.Utils;
 
 
-public class MainActivity extends SpotifyBaseActivity {
+public class MainActivity extends BaseActivity {
 
     @Override
     int contentViewId() {
@@ -30,7 +30,7 @@ public class MainActivity extends SpotifyBaseActivity {
 
     //TODO: Create the string messages in string file
     public void onStartSpotifyStreamer(View view) {
-        Intent spotifySearch = new Intent(MainActivity.this, SpotifySearcherActivity.class);
+        Intent spotifySearch = new Intent(MainActivity.this, SearcherActivity.class);
         startActivity(spotifySearch);
     }
 

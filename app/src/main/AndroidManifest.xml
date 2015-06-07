@@ -19,7 +19,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.SpotifySearcherActivity"
+            android:name=".ui.SearcherActivity"
             android:label="@string/title_activity_spotify_streamer" >
         </activity>
         <activity
@@ -27,7 +27,7 @@
             android:label="@string/title_activity_top_artist_songs" >
         </activity>
         <activity
-            android:name=".ui.SpotifyBaseActivity"
+            android:name=".ui.BaseActivity"
             android:label="@string/title_activity_spotify_base" >
         </activity>
     </application>

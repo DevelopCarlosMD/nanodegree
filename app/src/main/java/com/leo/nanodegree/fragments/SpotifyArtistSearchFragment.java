@@ -1,5 +1,7 @@
 package com.leo.nanodegree.fragments;
 
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -33,6 +35,7 @@ import retrofit.client.Response;
 public class SpotifyArtistSearchFragment extends Fragment implements AdapterView.OnItemClickListener {
 
     private ArtistSearchAdapter artistSearchAdapter;
+    private TextView errorText;
 
     public static SpotifyArtistSearchFragment newInstance() {
         return new SpotifyArtistSearchFragment();
@@ -63,22 +66,16 @@ public class SpotifyArtistSearchFragment extends Fragment implements AdapterView
         ListView artistAlbumsList = (ListView) view.findViewById(R.id.artist_search_list);
         artistAlbumsList.setAdapter(artistSearchAdapter);
         artistAlbumsList.setOnItemClickListener(SpotifyArtistSearchFragment.this);
-        startArtistSearch((EditText) view.findViewById(R.id.search_spotify_streamer));
-
+        startArtistSearch((EditText) view.findViewById(R.id.search_spotify_streamer), view.getContext());
+        errorText = (TextView) view.findViewById(R.id.artist_search_error_text);
     }
 
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-    }
+    private void searchArtistAlbums(Context context, String artist) {
 
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-
-    }
-
-    private void searchArtistAlbums(String artist) {
+        final ProgressDialog progressDialog = new ProgressDialog(context);
+        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        progressDialog.show();
+        progressDialog.setMessage(getString(R.string.downloading_title));
 
         SpotifyApi spotifyApi = new SpotifyApi();
         SpotifyService spotifyService = spotifyApi.getService();
@@ -87,32 +84,54 @@ public class SpotifyArtistSearchFragment extends Fragment implements AdapterView
             @Override
             public void success(final ArtistsPager artistsPager, Response response) {
 
-                if (response.getStatus() == 200 && artistsPager != null && getActivity() != null) {
-                    getActivity().runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            artistSearchAdapter.setItems(artistsPager.artists.items);
+                if (response.getStatus() == 200) {
+                    if (artistsPager != null && getActivity() != null) {
+                        if (artistsPager.artists.items.size() > 0) {
+                            getActivity().runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    errorText.setVisibility(View.GONE);
+                                    progressDialog.dismiss();
+                                    artistSearchAdapter.setItems(artistsPager.artists.items);
 
-                        }/**/
-                    });
+                                }/**/
+                            });
+                        } else {
+                            getActivity().runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    progressDialog.dismiss();
+                                    errorText.setVisibility(View.VISIBLE);
+                                }
+                            });
+                        }
+                    }
                 }
             }
 
             @Override
             public void failure(RetrofitError error) {
+                error.printStackTrace();
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        progressDialog.dismiss();
+                        errorText.setVisibility(View.VISIBLE);
 
+                    }
+                });
             }
         });
     }
 
-    private void startArtistSearch(final EditText artistSearcher) {
+    private void startArtistSearch(final EditText artistSearcher, final Context context) {
         artistSearcher.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
 
                 switch (actionId) {
                     case EditorInfo.IME_ACTION_SEARCH:
-                        searchArtistAlbums(artistSearcher.getText().toString());
+                        searchArtistAlbums(context, artistSearcher.getText().toString());
                         Utils.hideKeyBoard(textView);
                         return true;
                     default:

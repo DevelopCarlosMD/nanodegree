@@ -17,7 +17,7 @@ import kaaes.spotify.webapi.android.models.Artist;
 /**
  * Created by leo on 6/2/15.
  */
-public class ArtistSearchAdapter extends SpotifyBaseAdapter<Artist> {
+public class ArtistSearchAdapter extends CommonAdapter<Artist> {
 
     @Override
     public View getView(int i, View view, @Nullable ViewGroup viewGroup) {

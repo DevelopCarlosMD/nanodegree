@@ -1,18 +1,13 @@
 package com.leo.nanodegree.ui;
 
-import android.os.PersistableBundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.NavUtils;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.view.Menu;
 import android.view.MenuItem;
 
 import com.leo.nanodegree.R;
 import com.leo.nanodegree.fragments.TopArtistSongsFragment;
 
-public class TopArtistSongsActivity extends SpotifyBaseActivity {
+public class TopArtistSongsActivity extends BaseActivity {
 
     @Override
     int contentViewId() {
