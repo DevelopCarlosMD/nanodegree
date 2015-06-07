@@ -24,4 +24,6 @@
     <string name="artist_searcher_hint_text">Search</string>
     <string name="title_activity_top_artist_songs">Top Tracks</string>
     <string name="title_activity_spotify_base">SpotifyBaseActivity</string>
+    <string name="downloading_title">Searching ...</string>
 </resources>
+

@@ -1,5 +1,6 @@
 package com.leo.nanodegree.fragments;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -55,6 +56,12 @@ public class TopArtistSongsFragment extends Fragment {
     }
 
     private void getArtistTopTrack(String artistId){
+
+        final ProgressDialog progressDialog = new ProgressDialog(getActivity());
+        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        progressDialog.show();
+        progressDialog.setMessage(getString(R.string.downloading_title));
+
         SpotifyApi spotifyApi = new SpotifyApi();
         SpotifyService spotifyService = spotifyApi.getService();
         Map<String,Object> parameters = new HashMap<>();
@@ -68,6 +75,7 @@ public class TopArtistSongsFragment extends Fragment {
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
+                        progressDialog.dismiss();
                         topArtistSongsAdapter.setItems(tracks.tracks);
                     }
                 });
@@ -76,6 +84,7 @@ public class TopArtistSongsFragment extends Fragment {
             @Override
             public void failure(RetrofitError error) {
                 error.printStackTrace();
+                progressDialog.dismiss();
             }
         });
     }
