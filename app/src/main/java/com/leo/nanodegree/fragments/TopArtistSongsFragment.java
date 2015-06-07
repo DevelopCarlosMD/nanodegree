@@ -103,8 +103,14 @@ public class TopArtistSongsFragment extends Fragment {
             @Override
             public void failure(RetrofitError error) {
                 error.printStackTrace();
-                progressDialog.dismiss();
-                errorText.setVisibility(View.VISIBLE);
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        progressDialog.dismiss();
+                        errorText.setVisibility(View.VISIBLE);
+
+                    }
+                });
             }
         });
     }

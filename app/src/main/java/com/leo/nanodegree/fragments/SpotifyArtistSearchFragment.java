@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -112,9 +111,15 @@ public class SpotifyArtistSearchFragment extends Fragment implements AdapterView
 
             @Override
             public void failure(RetrofitError error) {
-                progressDialog.dismiss();
                 error.printStackTrace();
-                errorText.setVisibility(View.VISIBLE);
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        progressDialog.dismiss();
+                        errorText.setVisibility(View.VISIBLE);
+
+                    }
+                });
             }
         });
     }
