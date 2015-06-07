@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 
 import com.leo.nanodegree.R;
-import com.leo.nanodegree.adapters.TopArtistSongsAdapter;
+import com.leo.nanodegree.adapters.TopArtistTracksAdapter;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -26,7 +26,7 @@ import retrofit.client.Response;
  */
 public class TopArtistSongsFragment extends Fragment {
 
-    private TopArtistSongsAdapter topArtistSongsAdapter;
+    private TopArtistTracksAdapter topArtistSongsAdapter;
     public TopArtistSongsFragment newInstance(){
         return new TopArtistSongsFragment();
     }
@@ -34,7 +34,7 @@ public class TopArtistSongsFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        topArtistSongsAdapter = new TopArtistSongsAdapter();
+        topArtistSongsAdapter = new TopArtistTracksAdapter();
     }
 
     @Nullable
@@ -62,15 +62,17 @@ public class TopArtistSongsFragment extends Fragment {
         spotifyService.getArtistTopTrack(artistId,parameters,new Callback<Tracks>() {
             @Override
             public void success(final Tracks tracks, Response response) {
+
+                if (response.getStatus() == 200 && tracks != null && getActivity() != null) {
+
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        topArtistSongsAdapter.setDataToAdapter(tracks.tracks);
+                        topArtistSongsAdapter.setItems(tracks.tracks);
                     }
                 });
-
+                }
             }
-
             @Override
             public void failure(RetrofitError error) {
                 error.printStackTrace();
