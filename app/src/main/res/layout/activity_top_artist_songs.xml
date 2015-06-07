@@ -1,0 +1,18 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+        tools:context="com.leo.nanodegree.ui.TopArtistSongsActivity"
+    android:orientation="vertical"
+    >
+
+    <include layout="@layout/toolbar_widget"/>
+  <fragment
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:name="com.leo.nanodegree.fragments.TopArtistSongsFragment"
+      android:id="@+id/top_artist_songs_fragment"
+      tools:layout="@layout/top_arttist_songs_fragment"
+
+      />
+
+</LinearLayout>
