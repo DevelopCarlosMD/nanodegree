@@ -26,6 +26,10 @@
             android:name=".ui.TopArtistSongsActivity"
             android:label="@string/title_activity_top_artist_songs" >
         </activity>
+        <activity
+            android:name=".ui.SpotifyBaseActivity"
+            android:label="@string/title_activity_spotify_base" >
+        </activity>
     </application>
 
 </manifest>
