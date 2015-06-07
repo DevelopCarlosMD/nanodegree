@@ -32,6 +32,7 @@ public abstract class CommonAdapter<T> extends android.widget.BaseAdapter {
 
     public void setItems(List<T> adapterItems) {
         if (adapterItems != null) {
+            clearData();
             this.items.addAll(adapterItems);
             notifyDataSetChanged();
         }
