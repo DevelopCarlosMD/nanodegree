@@ -26,5 +26,6 @@
     <string name="title_activity_spotify_base">SpotifyBaseActivity</string>
     <string name="downloading_title">Searching ...</string>
     <string name="error_text">Not results found</string>
+    <string name="title_activity_spotify_player">SpotifyPlayerActivity</string>
 </resources>
 

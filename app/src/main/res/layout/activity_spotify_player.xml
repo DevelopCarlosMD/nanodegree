@@ -1,0 +1,18 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.leo.nanodegree.ui.SpotifyPlayerActivity"
+    android:orientation="vertical"
+    >
+
+        <include
+            layout="@layout/toolbar_widget"/>
+
+    <fragment
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:name="com.leo.nanodegree.fragments.SpotifyPlayerFragment"
+        android:id="@+id/fragment"
+        android:layout_gravity="center_horizontal"
+        tools:layout="@layout/spotify_player_layout" />
+</LinearLayout>
