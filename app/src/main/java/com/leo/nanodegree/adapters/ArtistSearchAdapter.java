@@ -10,6 +10,8 @@ import android.widget.TextView;
 import com.leo.nanodegree.R;
 import com.squareup.picasso.Picasso;
 
+import org.parceler.ParcelClass;
+
 import kaaes.spotify.webapi.android.models.Artist;
 
 
@@ -32,7 +34,7 @@ public class ArtistSearchAdapter extends CommonAdapter<Artist> {
             ArtistsSearchHolder = (ArtistsSearchHolder)view.getTag();
         }
 
-        if(this.getItems().get(i).images.size() >0) {
+        if(getItems().get(i).images.size() >0 && getItems().get(i).images.get(1).url != null) {
             Picasso.with(viewGroup.getContext())
                     .load(getItems().get(i).images.get(1).url)
                     .resize(200, 200)

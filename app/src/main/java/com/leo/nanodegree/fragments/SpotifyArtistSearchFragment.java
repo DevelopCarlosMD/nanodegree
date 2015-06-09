@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.KeyEvent;
@@ -20,6 +21,8 @@ import com.leo.nanodegree.R;
 import com.leo.nanodegree.adapters.ArtistSearchAdapter;
 import com.leo.nanodegree.ui.TopArtistSongsActivity;
 import com.leo.nanodegree.utils.Utils;
+
+
 
 import kaaes.spotify.webapi.android.SpotifyApi;
 import kaaes.spotify.webapi.android.SpotifyService;
@@ -55,8 +58,9 @@ public class SpotifyArtistSearchFragment extends Fragment implements AdapterView
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
     }
 
     @Override
@@ -100,12 +104,16 @@ public class SpotifyArtistSearchFragment extends Fragment implements AdapterView
                             getActivity().runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
+                                    artistSearchAdapter.clearData();
                                     progressDialog.dismiss();
                                     errorText.setVisibility(View.VISIBLE);
                                 }
                             });
                         }
                     }
+                }else{
+                    progressDialog.dismiss();
+                    errorText.setVisibility(View.VISIBLE);
                 }
             }
 

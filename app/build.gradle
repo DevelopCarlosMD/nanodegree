@@ -26,4 +26,5 @@ dependencies {
     compile 'com.squareup.okhttp:okhttp:2.2.0'
     compile 'com.android.support:appcompat-v7:22.2.0'
     compile 'com.android.support:support-v4:22.2.0'
+    compile 'org.parceler:parceler:1.0.0'
 }
