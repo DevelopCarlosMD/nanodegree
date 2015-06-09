@@ -14,6 +14,7 @@ import com.leo.nanodegree.R;
 import com.leo.nanodegree.adapters.TopArtistTracksAdapter;
 
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 import kaaes.spotify.webapi.android.SpotifyApi;
@@ -71,7 +72,7 @@ public class TopArtistSongsFragment extends Fragment {
         SpotifyApi spotifyApi = new SpotifyApi();
         SpotifyService spotifyService = spotifyApi.getService();
         Map<String, Object> parameters = new HashMap<>();
-        parameters.put("country", "SE");
+        parameters.put("country", Locale.getDefault().getCountry());
         spotifyService.getArtistTopTrack(artistId, parameters, new Callback<Tracks>() {
             @Override
             public void success(final Tracks tracks, Response response) {
@@ -91,6 +92,7 @@ public class TopArtistSongsFragment extends Fragment {
                         getActivity().runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
+                                topArtistSongsAdapter.clearData();
                                 progressDialog.dismiss();
                                 errorText.setVisibility(View.VISIBLE);
 
@@ -98,6 +100,9 @@ public class TopArtistSongsFragment extends Fragment {
                         });
 
                     }
+                } else {
+                    progressDialog.dismiss();
+                    errorText.setVisibility(View.VISIBLE);
                 }
             }
 

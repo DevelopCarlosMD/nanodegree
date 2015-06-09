@@ -10,6 +10,7 @@ import android.widget.TextView;
 import com.leo.nanodegree.R;
 import com.squareup.picasso.Picasso;
 
+
 import kaaes.spotify.webapi.android.models.Track;
 
 /**
@@ -30,9 +31,11 @@ public class TopArtistTracksAdapter extends CommonAdapter<Track> {
             topArtistSongsHolder = (TopArtistSongsHolder) view.getTag();
         }
 
-        Picasso.with(viewGroup.getContext())
-                .load(getItems().get(i).album.images.get(1).url)
-                .into(topArtistSongsHolder.artistImage);
+        if(getItems().get(i).album.images != null && getItems().get(i).album.images.get(1).url != null) {
+            Picasso.with(viewGroup.getContext())
+                    .load(getItems().get(i).album.images.get(1).url)
+                    .into(topArtistSongsHolder.artistImage);
+        }
         topArtistSongsHolder.artistSongName.setText(getItems().get(i).name);
         topArtistSongsHolder.artistAlbumName.setText(getItems().get(i).album.name);
 

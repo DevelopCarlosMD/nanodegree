@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -27,6 +28,7 @@ import com.leo.nanodegree.utils.Utils;
 
 import java.lang.reflect.Type;
 import java.util.List;
+
 
 import kaaes.spotify.webapi.android.SpotifyApi;
 import kaaes.spotify.webapi.android.SpotifyService;
@@ -70,6 +72,7 @@ public class SpotifyArtistSearchFragment extends Fragment implements AdapterView
         Type artistAdapterType = new TypeToken<List<Artist>>(){}.getType();
         String adapterItems = gson.toJson(artistSearchAdapter.getItems(),artistAdapterType);
         outState.putString("adapter_items", adapterItems);
+
     }
 
     @Override
@@ -127,12 +130,16 @@ public class SpotifyArtistSearchFragment extends Fragment implements AdapterView
                             getActivity().runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
+                                    artistSearchAdapter.clearData();
                                     progressDialog.dismiss();
                                     errorText.setVisibility(View.VISIBLE);
                                 }
                             });
                         }
                     }
+                }else{
+                    progressDialog.dismiss();
+                    errorText.setVisibility(View.VISIBLE);
                 }
             }
 
