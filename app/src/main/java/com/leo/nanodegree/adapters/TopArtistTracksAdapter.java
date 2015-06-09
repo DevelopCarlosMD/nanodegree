@@ -10,7 +10,6 @@ import android.widget.TextView;
 import com.leo.nanodegree.R;
 import com.squareup.picasso.Picasso;
 
-import org.parceler.ParcelClass;
 
 import kaaes.spotify.webapi.android.models.Track;
 

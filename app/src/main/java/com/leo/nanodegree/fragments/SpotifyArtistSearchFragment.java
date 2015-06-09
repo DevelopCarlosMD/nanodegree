@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,11 +18,16 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 import com.leo.nanodegree.R;
 import com.leo.nanodegree.adapters.ArtistSearchAdapter;
 import com.leo.nanodegree.ui.TopArtistSongsActivity;
 import com.leo.nanodegree.utils.Utils;
 
+import java.lang.reflect.Type;
+import java.util.List;
 
 
 import kaaes.spotify.webapi.android.SpotifyApi;
@@ -49,6 +55,7 @@ public class SpotifyArtistSearchFragment extends Fragment implements AdapterView
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         artistSearchAdapter = new ArtistSearchAdapter();
+        setRetainInstance(true);
     }
 
     @Nullable
@@ -61,6 +68,11 @@ public class SpotifyArtistSearchFragment extends Fragment implements AdapterView
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
 
+        Gson gson = new GsonBuilder().create();
+        Type artistAdapterType = new TypeToken<List<Artist>>(){}.getType();
+        String adapterItems = gson.toJson(artistSearchAdapter.getItems(),artistAdapterType);
+        outState.putString("adapter_items", adapterItems);
+
     }
 
     @Override
@@ -72,6 +84,20 @@ public class SpotifyArtistSearchFragment extends Fragment implements AdapterView
         artistAlbumsList.setOnItemClickListener(SpotifyArtistSearchFragment.this);
         startArtistSearch((EditText) view.findViewById(R.id.search_spotify_streamer), view.getContext());
         errorText = (TextView) view.findViewById(R.id.artist_search_error_text);
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        if(savedInstanceState != null){
+            if(savedInstanceState.getString("adapter_items") != null){
+                Gson gson = new GsonBuilder().create();
+                Type artistAdapterType = new TypeToken<List<Artist>>(){}.getType();
+                List<Artist> artistList = gson.fromJson(savedInstanceState.getString("adapter_items"), artistAdapterType);
+                artistSearchAdapter.setItems(artistList);
+            }
+        }
     }
 
     private void searchArtistAlbums(Context context, String artist) {

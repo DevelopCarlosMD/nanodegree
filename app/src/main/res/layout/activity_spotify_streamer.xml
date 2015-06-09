@@ -12,6 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:layout="@layout/spotify_search_fragment"
+        android:id="@+id/artist_search_fragment"
         class="com.leo.nanodegree.fragments.SpotifyArtistSearchFragment"
         />
 </LinearLayout>

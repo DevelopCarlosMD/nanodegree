@@ -14,6 +14,7 @@ import com.leo.nanodegree.R;
 import com.leo.nanodegree.adapters.TopArtistTracksAdapter;
 
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 import kaaes.spotify.webapi.android.SpotifyApi;
@@ -39,6 +40,7 @@ public class TopArtistSongsFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         topArtistSongsAdapter = new TopArtistTracksAdapter();
+        setRetainInstance(true);
     }
 
     @Nullable
@@ -50,11 +52,11 @@ public class TopArtistSongsFragment extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        ListView topArtistSongsLits = (ListView) view.findViewById(R.id.top_artist_songs_list);
-        topArtistSongsLits.setAdapter(topArtistSongsAdapter);
+        ListView topArtistSongsList = (ListView) view.findViewById(R.id.top_artist_songs_list);
+        topArtistSongsList.setAdapter(topArtistSongsAdapter);
         errorText = (TextView) view.findViewById(R.id.top_track_error_text);
-
     }
+
 
     public void showArtistTopTrack(String artistId) {
         getArtistTopTrack(artistId);
@@ -70,7 +72,7 @@ public class TopArtistSongsFragment extends Fragment {
         SpotifyApi spotifyApi = new SpotifyApi();
         SpotifyService spotifyService = spotifyApi.getService();
         Map<String, Object> parameters = new HashMap<>();
-        parameters.put("country", "SE");
+        parameters.put("country", Locale.getDefault().getCountry());
         spotifyService.getArtistTopTrack(artistId, parameters, new Callback<Tracks>() {
             @Override
             public void success(final Tracks tracks, Response response) {
@@ -98,7 +100,7 @@ public class TopArtistSongsFragment extends Fragment {
                         });
 
                     }
-                }else{
+                } else {
                     progressDialog.dismiss();
                     errorText.setVisibility(View.VISIBLE);
                 }
