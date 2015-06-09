@@ -2,14 +2,13 @@ package com.leo.nanodegree.adapters;
 
 import android.widget.BaseAdapter;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by leo on 6/6/15.
  */
-public abstract class CommonAdapter<T> extends android.widget.BaseAdapter {
+public abstract class CommonAdapter<T> extends BaseAdapter {
 
     private List<T> items;
 
@@ -26,8 +25,10 @@ public abstract class CommonAdapter<T> extends android.widget.BaseAdapter {
     }
 
     public void clearData() {
-        if (this.items != null)
+        if (this.items != null) {
             this.items.clear();
+            notifyDataSetChanged();
+        }
     }
 
     public void setItems(List<T> adapterItems) {

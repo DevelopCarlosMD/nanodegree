@@ -22,9 +22,11 @@ public class TopArtistSongsActivity extends BaseActivity {
     @Override
     void onCreateActivity(@Nullable Bundle savedInstanceState) {
 
-        if (getIntent().getExtras() != null) {
-            TopArtistSongsFragment topArtistSongsFragment = (TopArtistSongsFragment) getSupportFragmentManager().findFragmentById(R.id.top_artist_songs_fragment);
-            topArtistSongsFragment.showArtistTopTrack(getIntent().getExtras().getString("artist_id"));
+        if(savedInstanceState == null) {
+            if (getIntent().getExtras() != null) {
+                TopArtistSongsFragment topArtistSongsFragment = (TopArtistSongsFragment) getSupportFragmentManager().findFragmentById(R.id.top_artist_songs_fragment);
+                topArtistSongsFragment.showArtistTopTrack(getIntent().getExtras().getString("artist_id"));
+            }
         }
     }
 
