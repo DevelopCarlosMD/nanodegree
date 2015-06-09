@@ -25,8 +25,10 @@ public abstract class CommonAdapter<T> extends BaseAdapter {
     }
 
     public void clearData() {
-        if (this.items != null && this.items.size() > 0)
+        if (this.items != null) {
             this.items.clear();
+            notifyDataSetChanged();
+        }
     }
 
     public void setItems(List<T> adapterItems) {
