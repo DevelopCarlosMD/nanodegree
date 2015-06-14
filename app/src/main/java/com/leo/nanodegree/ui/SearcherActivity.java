@@ -1,7 +1,6 @@
 package com.leo.nanodegree.ui;
 
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.support.annotation.Nullable;
 
 import com.leo.nanodegree.R;
@@ -14,11 +13,8 @@ public class SearcherActivity extends BaseActivity {
     }
 
     @Override
-    boolean activeBackButton() {
+    boolean activateBackButton() {
         return false;
     }
 
-    @Override
-    void onCreateActivity(@Nullable Bundle savedInstanceState) {
-    }
 }

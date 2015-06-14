@@ -11,6 +11,8 @@ import com.leo.nanodegree.R;
 import com.squareup.picasso.Picasso;
 
 
+import butterknife.ButterKnife;
+import butterknife.InjectView;
 import kaaes.spotify.webapi.android.models.Artist;
 
 
@@ -23,11 +25,10 @@ public class ArtistSearchAdapter extends CommonAdapter<Artist> {
     @Override
     public View getView(int i, View view, @Nullable ViewGroup viewGroup) {
 
-        ArtistsSearchHolder ArtistsSearchHolder = new ArtistsSearchHolder();
+        ArtistsSearchHolder ArtistsSearchHolder;
         if (view == null) {
             view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.spotify_streamer_row_layout,viewGroup,false);
-            ArtistsSearchHolder.artistsImage = (ImageView) view.findViewById(R.id.artist_image);
-            ArtistsSearchHolder.artistsName = (TextView) view.findViewById(R.id.artist_name);
+            ArtistsSearchHolder = new ArtistsSearchHolder(view);
             view.setTag(ArtistsSearchHolder);
         }else{
             ArtistsSearchHolder = (ArtistsSearchHolder)view.getTag();
@@ -45,7 +46,11 @@ public class ArtistSearchAdapter extends CommonAdapter<Artist> {
     }
 
     public static class ArtistsSearchHolder {
-        public ImageView artistsImage;
-        public TextView artistsName;
+        @InjectView(R.id.artist_image) ImageView artistsImage;
+        @InjectView(R.id.artist_name) TextView artistsName;
+
+        public ArtistsSearchHolder(View view){
+            ButterKnife.inject(this,view);
+        }
     }
 }

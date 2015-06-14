@@ -8,11 +8,10 @@
         <include
             layout="@layout/toolbar_widget"/>
 
-    <fragment
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:name="com.leo.nanodegree.fragments.SpotifyPlayerFragment"
-        android:id="@+id/fragment"
+        android:id="@+id/spotify_player_fragment"
         android:layout_gravity="center_horizontal"
-        tools:layout="@layout/spotify_player_layout" />
+       />
 </LinearLayout>

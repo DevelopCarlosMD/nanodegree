@@ -28,40 +28,51 @@ import com.leo.nanodegree.utils.Utils;
 
 import java.lang.reflect.Type;
 import java.util.List;
+import java.util.concurrent.Executors;
 
 
+import butterknife.InjectView;
+import butterknife.OnItemClick;
+import butterknife.OnItemSelected;
 import kaaes.spotify.webapi.android.SpotifyApi;
 import kaaes.spotify.webapi.android.SpotifyService;
 import kaaes.spotify.webapi.android.models.Artist;
 import kaaes.spotify.webapi.android.models.ArtistsPager;
 import retrofit.Callback;
 import retrofit.RetrofitError;
+import retrofit.android.MainThreadExecutor;
 import retrofit.client.Response;
 
 /**
  * Created by leo on 6/2/15.
  */
-public class SpotifyArtistSearchFragment extends Fragment implements AdapterView.OnItemClickListener {
+public class SpotifyArtistSearchFragment extends BaseListFragment {
+
+    @InjectView(R.id.artist_search_error_text)
+    TextView errorText;
+    @InjectView(R.id.artist_search_list)
+    ListView artistAlbumsList;
 
     private ArtistSearchAdapter artistSearchAdapter;
-    private TextView errorText;
 
     public static SpotifyArtistSearchFragment newInstance() {
         return new SpotifyArtistSearchFragment();
     }
 
-
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    protected void onCreateFragment(Bundle savedInstanceState) {
+        super.onCreateFragment(savedInstanceState);
         artistSearchAdapter = new ArtistSearchAdapter();
-        setRetainInstance(true);
     }
 
-    @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.spotify_search_fragment, container, false);
+    protected boolean activateRetainInstance() {
+        return true;
+    }
+
+    @Override
+    protected int fragmentLayoutResource() {
+        return R.layout.spotify_search_fragment;
     }
 
     @Override
@@ -69,8 +80,9 @@ public class SpotifyArtistSearchFragment extends Fragment implements AdapterView
         super.onSaveInstanceState(outState);
 
         Gson gson = new GsonBuilder().create();
-        Type artistAdapterType = new TypeToken<List<Artist>>(){}.getType();
-        String adapterItems = gson.toJson(artistSearchAdapter.getItems(),artistAdapterType);
+        Type artistAdapterType = new TypeToken<List<Artist>>() {
+        }.getType();
+        String adapterItems = gson.toJson(artistSearchAdapter.getItems(), artistAdapterType);
         outState.putString("adapter_items", adapterItems);
 
     }
@@ -79,21 +91,19 @@ public class SpotifyArtistSearchFragment extends Fragment implements AdapterView
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        ListView artistAlbumsList = (ListView) view.findViewById(R.id.artist_search_list);
         artistAlbumsList.setAdapter(artistSearchAdapter);
-        artistAlbumsList.setOnItemClickListener(SpotifyArtistSearchFragment.this);
         startArtistSearch((EditText) view.findViewById(R.id.search_spotify_streamer), view.getContext());
-        errorText = (TextView) view.findViewById(R.id.artist_search_error_text);
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        if(savedInstanceState != null){
-            if(savedInstanceState.getString("adapter_items") != null){
+        if (savedInstanceState != null) {
+            if (savedInstanceState.getString("adapter_items") != null) {
                 Gson gson = new GsonBuilder().create();
-                Type artistAdapterType = new TypeToken<List<Artist>>(){}.getType();
+                Type artistAdapterType = new TypeToken<List<Artist>>() {
+                }.getType();
                 List<Artist> artistList = gson.fromJson(savedInstanceState.getString("adapter_items"), artistAdapterType);
                 artistSearchAdapter.setItems(artistList);
             }
@@ -107,9 +117,9 @@ public class SpotifyArtistSearchFragment extends Fragment implements AdapterView
         progressDialog.show();
         progressDialog.setMessage(getString(R.string.downloading_title));
 
-        SpotifyApi spotifyApi = new SpotifyApi();
-        SpotifyService spotifyService = spotifyApi.getService();
+        SpotifyApi spotifyApi = new SpotifyApi(Executors.newSingleThreadExecutor(), new MainThreadExecutor());
 
+        SpotifyService spotifyService = spotifyApi.getService();
         spotifyService.searchArtists(artist, new Callback<ArtistsPager>() {
             @Override
             public void success(final ArtistsPager artistsPager, Response response) {
@@ -117,27 +127,17 @@ public class SpotifyArtistSearchFragment extends Fragment implements AdapterView
                 if (response.getStatus() == 200) {
                     if (artistsPager != null && getActivity() != null) {
                         if (artistsPager.artists.items.size() > 0) {
-                            getActivity().runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    errorText.setVisibility(View.GONE);
-                                    progressDialog.dismiss();
-                                    artistSearchAdapter.setItems(artistsPager.artists.items);
+                            errorText.setVisibility(View.GONE);
+                            progressDialog.dismiss();
+                            artistSearchAdapter.setItems(artistsPager.artists.items);
 
-                                }/**/
-                            });
                         } else {
-                            getActivity().runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    artistSearchAdapter.clearData();
-                                    progressDialog.dismiss();
-                                    errorText.setVisibility(View.VISIBLE);
-                                }
-                            });
+                            artistSearchAdapter.clearData();
+                            progressDialog.dismiss();
+                            errorText.setVisibility(View.VISIBLE);
                         }
                     }
-                }else{
+                } else {
                     progressDialog.dismiss();
                     errorText.setVisibility(View.VISIBLE);
                 }
@@ -146,14 +146,9 @@ public class SpotifyArtistSearchFragment extends Fragment implements AdapterView
             @Override
             public void failure(RetrofitError error) {
                 error.printStackTrace();
-                getActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        progressDialog.dismiss();
-                        errorText.setVisibility(View.VISIBLE);
+                progressDialog.dismiss();
+                errorText.setVisibility(View.VISIBLE);
 
-                    }
-                });
             }
         });
     }
@@ -175,9 +170,8 @@ public class SpotifyArtistSearchFragment extends Fragment implements AdapterView
         });
     }
 
-    @Override
+    @OnItemClick(R.id.artist_search_list)
     public void onItemClick(@Nullable AdapterView<?> adapterView, @Nullable View view, int i, long l) {
-
         Artist artist = (Artist) adapterView.getAdapter().getItem(i);
         Intent topArtistSongsIntent = new Intent(getActivity(), TopArtistSongsActivity.class);
         topArtistSongsIntent.putExtra("artist_id", artist.id);
