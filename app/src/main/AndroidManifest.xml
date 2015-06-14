@@ -31,6 +31,10 @@
             android:name=".ui.BaseActivity"
             android:label="@string/title_activity_spotify_base" >
         </activity>
+        <activity
+            android:name=".ui.SpotifyPlayerActivity"
+            android:label="@string/title_activity_spotify_player" >
+        </activity>
     </application>
 
 </manifest>

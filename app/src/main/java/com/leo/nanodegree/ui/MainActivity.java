@@ -18,15 +18,9 @@ public class MainActivity extends BaseActivity {
     }
 
     @Override
-    boolean activeBackButton() {
+    boolean activateBackButton() {
         return false;
     }
-
-    @Override
-    void onCreateActivity(@Nullable Bundle savedInstanceState) {
-
-    }
-
 
     //TODO: Create the string messages in string file
     public void onStartSpotifyStreamer(View view) {
