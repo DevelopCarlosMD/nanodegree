@@ -79,7 +79,7 @@
             android:textAppearance="?android:attr/textAppearanceSmall"
             tools:text="Small Text"
             android:layout_weight="1"
-            android:id="@+id/track_time_progress"
+            android:id="@+id/track_duration"
             android:gravity="right"
             />
     </LinearLayout>
@@ -95,8 +95,10 @@
             tools:text="New Button"
             android:layout_weight="1"
             android:id="@+id/previuos_track_button"
-            android:src="@drawable/ic_fast_rewind_black"
+            android:src="@android:drawable/ic_media_previous"
             android:padding="@dimen/general_padding"
+            android:layout_margin="@dimen/player_button_margin"
+            android:background="@color/primary_dark"
             />
         <ImageButton
             android:layout_width="0dp"
@@ -104,7 +106,9 @@
             tools:text="New Button"
             android:layout_weight="1"
             android:id="@+id/play_track_button"
-            android:src="@drawable/ic_play_arrow_black" />
+            android:src="@android:drawable/ic_media_play"
+            android:background="@color/primary_dark"
+            android:layout_margin="@dimen/player_button_margin" />
 
         <ImageButton
             android:layout_width="0dp"
@@ -112,7 +116,9 @@
             tools:text="New Button"
             android:layout_weight="1"
             android:id="@+id/next_track_button"
-            android:src="@drawable/ic_fast_forward_black" />
+            android:src="@android:drawable/ic_media_next"
+            android:background="@color/primary_dark"
+            android:layout_margin="@dimen/player_button_margin" />
     </LinearLayout>
 </LinearLayout>
 

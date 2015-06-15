@@ -29,15 +29,15 @@ public class BaseDialogFragment extends DialogFragment {
         return commonView;
     }
 
-    public int fragmentLayoutResource() {
+    protected int fragmentLayoutResource() {
         return 0;
     }
 
-    public boolean activateRetainInstance() {
+    protected boolean activateRetainInstance() {
         return false;
     }
 
-    public void onCreateFragment(Bundle savedInstanceState) {
+    protected void onCreateFragment(Bundle savedInstanceState) {
     }
 
 
