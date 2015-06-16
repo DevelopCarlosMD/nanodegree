@@ -75,11 +75,14 @@ public class SpotifyPlayerService extends Service implements MediaPlayer.OnPrepa
     }
 
     @Override
-    public int onStartCommand(@NonNull Intent intent, int flags, int startId) {
+    public int onStartCommand(Intent intent, int flags, int startId) {
 
-        if(intent.hasExtra(TRACK_PREVIEW_URL)){
-            setTrackUrlPreview(intent.getStringExtra(TRACK_PREVIEW_URL));
-            playTrack(0);
+        if (intent != null && intent.hasExtra(TRACK_PREVIEW_URL)) {
+            String trackUrl = intent.getStringExtra(TRACK_PREVIEW_URL);
+            if (trackUrl != null) {
+                setTrackUrlPreview(intent.getStringExtra(TRACK_PREVIEW_URL));
+                playTrack(0);
+            }
         }
         return START_STICKY;
     }
