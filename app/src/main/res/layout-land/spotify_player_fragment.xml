@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingTop="@dimen/general_padding"
+        android:paddingLeft="@dimen/general_padding"
+        android:paddingRight="@dimen/general_padding"
+        >
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        >
+
+        <ImageView
+        android:layout_width="@dimen/player_song_image_size"
+        android:layout_height="@dimen/player_song_image_size"
+        android:id="@+id/player_album_image"
+        android:layout_gravity="left"
+        android:src="@mipmap/ic_launcher" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_gravity="center_vertical"
+            >
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        tools:text="Small Text"
+        android:id="@+id/player_track_name"
+        android:padding="@dimen/player_info_padding"
+        />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            tools:text="Small Text"
+            android:id="@+id/player_album_name"
+            android:padding="@dimen/player_info_padding"
+
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            tools:text="Small Text"
+            android:id="@+id/player_artist_name"
+            android:padding="@dimen/player_info_padding"
+
+            />
+        </LinearLayout>
+    </LinearLayout>
+    <SeekBar
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/track_progress"
+        android:layout_below="@+id/player_track_name"
+        android:layout_centerHorizontal="true"
+        android:indeterminate="false" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        >
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            tools:text="Small Text"
+            android:layout_weight="1"
+            android:id="@+id/track_time_start"
+             />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            tools:text="Small Text"
+            android:layout_weight="1"
+            android:id="@+id/track_duration"
+            android:gravity="right"
+            />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:layout_gravity="center_horizontal"
+        android:gravity="center_horizontal"
+        >
+
+        <ImageButton
+            android:layout_width="@dimen/player_button_width"
+            android:layout_height="@dimen/player_buttons_size"
+            tools:text="New Button"
+            android:id="@+id/previuos_track_button"
+            android:src="@android:drawable/ic_media_previous"
+            android:padding="@dimen/general_padding"
+            android:layout_margin="@dimen/player_button_margin"
+            android:background="@color/primary_dark"
+            />
+        <ImageButton
+            android:layout_width="@dimen/player_button_width"
+            android:layout_height="@dimen/player_buttons_size"
+            tools:text="New Button"
+            android:id="@+id/play_track_button"
+            android:src="@android:drawable/ic_media_play"
+            android:background="@color/primary_dark"
+            android:layout_margin="@dimen/player_button_margin" />
+
+        <ImageButton
+            android:layout_width="@dimen/player_button_width"
+            android:layout_height="@dimen/player_buttons_size"
+            tools:text="New Button"
+            android:id="@+id/next_track_button"
+            android:src="@android:drawable/ic_media_next"
+            android:background="@color/primary_dark"
+            android:layout_margin="@dimen/player_button_margin" />
+    </LinearLayout>
+</LinearLayout>
+

@@ -72,10 +72,10 @@ public class SpotifyPlayerFragment extends BaseDialogFragment implements OnPlayT
     private ServiceConnection serviceConnection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
-            SpotifyPlayerService.SpotifyPlayerBinder playerBinder = (SpotifyPlayerService.SpotifyPlayerBinder)iBinder;
+            SpotifyPlayerService.SpotifyPlayerBinder playerBinder = (SpotifyPlayerService.SpotifyPlayerBinder) iBinder;
             spotifyPlayerService = playerBinder.getService();
             isServiceBounded = true;
-            if(!isPlayerPlaying){
+            if (!isPlayerPlaying) {
                 isPlayerPlaying = true;
             }
             setTrackDuration();
@@ -88,19 +88,18 @@ public class SpotifyPlayerFragment extends BaseDialogFragment implements OnPlayT
         }
     };
 
-    private final Handler playerHandler = new Handler(){
+    private final Handler playerHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-            if(trackDuration == 0){
+            if (trackDuration == 0) {
                 setTrackDuration();
             }
             trackCurrentPosition = msg.getData().getInt(SpotifyPlayerService.CURRENT_TRACK_POSITION);
             trackProgress.setProgress(trackCurrentPosition);
-            Log.d(SpotifyPlayerFragment.class.getSimpleName(), "" + trackProgress);
-            trackElapsedTime.setText("00:" + String.format("%02d",trackCurrentPosition));
+            trackElapsedTime.setText("00:" + String.format("%02d", trackCurrentPosition));
 
-            if(trackCurrentPosition == trackDuration && trackCurrentPosition != 0){
+            if (trackCurrentPosition == trackDuration && trackCurrentPosition != 0) {
                 isPlayerPlaying = false;
                 isPlayerPaused = false;
                 trackCurrentPosition = 0;
@@ -135,10 +134,11 @@ public class SpotifyPlayerFragment extends BaseDialogFragment implements OnPlayT
     @Override
     public void onPlayTracks(String tracks, int trackSelectedPosition) {
 
-        if(tracks != null){
+        if (tracks != null) {
             Gson gson = new GsonBuilder().create();
-            Type trackAdapterType = new TypeToken<List<Track>>(){}.getType();
-            trackList = gson.fromJson(tracks,trackAdapterType);
+            Type trackAdapterType = new TypeToken<List<Track>>() {
+            }.getType();
+            trackList = gson.fromJson(tracks, trackAdapterType);
             trackListPosition = trackSelectedPosition;
         }
     }
@@ -148,20 +148,22 @@ public class SpotifyPlayerFragment extends BaseDialogFragment implements OnPlayT
         super.onSaveInstanceState(outState);
 
         Gson gson = new GsonBuilder().create();
-        Type trackAdapterType = new TypeToken<List<Track>>(){}.getType();
+        Type trackAdapterType = new TypeToken<List<Track>>() {
+        }.getType();
         outState.putString("track_list", gson.toJson(trackList, trackAdapterType));
         outState.putInt("track_list_position", trackListPosition);
         outState.putInt("seek_progress", trackCurrentPosition);
         outState.putBoolean("is_player_playing", isPlayerPlaying);
         outState.putBoolean("is_player_paused", isPlayerPaused);
         outState.putBoolean("is_service_bounded", isServiceBounded);
+        outState.putString("track_duration", spotifyPlayerService.getTrackDurationString());
     }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        if(savedInstanceState == null) {
+        if (savedInstanceState == null) {
             if (trackList != null) {
                 setPlayerInfo(trackListPosition);
                 startSpotifyService(trackList.get(trackListPosition).preview_url);
@@ -171,9 +173,10 @@ public class SpotifyPlayerFragment extends BaseDialogFragment implements OnPlayT
 
             trackProgress.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
                 @Override
-                public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+                public void onProgressChanged(@NonNull SeekBar seekBar, int i, boolean b) {
                     trackElapsedTime.setText("00:" + String.format("%02d", i));
                     trackCurrentPosition = i;
+
                 }
 
                 @Override
@@ -191,25 +194,26 @@ public class SpotifyPlayerFragment extends BaseDialogFragment implements OnPlayT
                     }
                 }
             });
-        }else{
+        } else {
             setPlayerInfo(savedInstanceState.getInt("track_list_position"));
-            trackProgress.setProgress(savedInstanceState.getInt("seek_progress"));
+            trackCurrentPosition = savedInstanceState.getInt("seek_progress");
             isPlayerPaused = savedInstanceState.getBoolean("is_player_paused");
             isPlayerPlaying = savedInstanceState.getBoolean("is_player_playing");
             isServiceBounded = savedInstanceState.getBoolean("is_service_bounded");
+            trackDurationView.setText(savedInstanceState.getString("track_duration"));
         }
 
 
     }
 
     @OnClick(R.id.play_track_button)
-    public void playTrackAction(View view){
-        if(isPlayerPlaying){
+    public void playTrackAction(View view) {
+        if (isPlayerPlaying) {
             playButton.setImageResource(android.R.drawable.ic_media_play);
             spotifyPlayerService.pauseTrack();
             isPlayerPaused = true;
             isPlayerPlaying = false;
-        }else{
+        } else {
             playButton.setImageResource(android.R.drawable.ic_media_pause);
             spotifyPlayerService.playTrack(trackCurrentPosition);
             isPlayerPaused = true;
@@ -219,15 +223,15 @@ public class SpotifyPlayerFragment extends BaseDialogFragment implements OnPlayT
 
     @OnClick(R.id.next_track_button)
     public void nextTrackAction(View view) {
-        trackListPosition = (trackListPosition +1) %trackList.size();
+        trackListPosition = (trackListPosition + 1) % trackList.size();
         changeTrack(trackListPosition);
     }
 
     @OnClick(R.id.previuos_track_button)
-    public void previuosTrackAction(View view){
-        trackListPosition = trackListPosition -1;
-        if(trackListPosition < 0){
-            trackListPosition = trackList.size() -1;
+    public void previuosTrackAction(View view) {
+        trackListPosition = trackListPosition - 1;
+        if (trackListPosition < 0) {
+            trackListPosition = trackList.size() - 1;
         }
         changeTrack(trackListPosition);
     }
@@ -235,7 +239,7 @@ public class SpotifyPlayerFragment extends BaseDialogFragment implements OnPlayT
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if (spotifyPlayerService!= null) {
+        if (spotifyPlayerService != null) {
             spotifyPlayerService.noUpdateUI();
             if (isServiceBounded) {
                 getActivity().getApplicationContext().unbindService(serviceConnection);
@@ -251,31 +255,32 @@ public class SpotifyPlayerFragment extends BaseDialogFragment implements OnPlayT
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        if(savedInstanceState != null){
+        if (savedInstanceState != null) {
             Gson gson = new GsonBuilder().create();
-            Type trackAdapterType = new TypeToken<List<Track>>(){}.getType();
-            trackList = gson.fromJson(savedInstanceState.getString("track_list"),trackAdapterType);
+            Type trackAdapterType = new TypeToken<List<Track>>() {
+            }.getType();
+            trackList = gson.fromJson(savedInstanceState.getString("track_list"), trackAdapterType);
             trackListPosition = savedInstanceState.getInt("track_list_position", 0);
         }
     }
 
-    private void setAlbumImage(String imageUrl,ImageView imageView){
-        if(imageUrl != null){
+    private void setAlbumImage(String imageUrl, ImageView imageView) {
+        if (imageUrl != null) {
             Picasso.with(getActivity())
-                    .load(imageUrl).resize(350,350)
+                    .load(imageUrl).resize(350, 350)
                     .into(imageView);
         }
     }
 
-    public void setTrackDuration(){
-        if(spotifyPlayerService != null){
+    public void setTrackDuration() {
+        if (spotifyPlayerService != null) {
             trackDuration = spotifyPlayerService.getTrackDuration();
             trackProgress.setMax(trackDuration);
             trackDurationView.setText(spotifyPlayerService.getTrackDurationString());
         }
     }
 
-    public void resetTrackDuration(){
+    public void resetTrackDuration() {
         trackProgress.setProgress(0);
         trackDurationView.setText("");
         trackElapsedTime.setText("");
@@ -284,7 +289,7 @@ public class SpotifyPlayerFragment extends BaseDialogFragment implements OnPlayT
 
     private void setPlayerInfo(int trackListPosition) {
 
-        Log.d(SpotifyPlayerFragment.class.getSimpleName(),"position: " +trackListPosition);
+        Log.d(SpotifyPlayerFragment.class.getSimpleName(), "position: " + trackListPosition);
         playerArtistName.setText(trackList.get(trackListPosition).artists.get(0).name);
         playerAlbumName.setText(trackList.get(trackListPosition).album.name);
         setAlbumImage(trackList.get(trackListPosition).album.images.get(0).url, playerAlbumImage);
@@ -292,7 +297,7 @@ public class SpotifyPlayerFragment extends BaseDialogFragment implements OnPlayT
 
     }
 
-    private void changeTrack(int trackListPosition){
+    private void changeTrack(int trackListPosition) {
         isPlayerPlaying = true;
         isPlayerPaused = false;
         setPlayerInfo(trackListPosition);
@@ -302,19 +307,19 @@ public class SpotifyPlayerFragment extends BaseDialogFragment implements OnPlayT
         resetTrackDuration();
     }
 
-    private void startSpotifyService(String trackUrl){
-        Intent spotifyServiceIntent = new Intent(getActivity(),SpotifyPlayerService.class);
-        spotifyServiceIntent.putExtra(SpotifyPlayerService.TRACK_PREVIEW_URL,trackUrl);
+    private void startSpotifyService(String trackUrl) {
+        Intent spotifyServiceIntent = new Intent(getActivity(), SpotifyPlayerService.class);
+        spotifyServiceIntent.putExtra(SpotifyPlayerService.TRACK_PREVIEW_URL, trackUrl);
 
         if (Utils.isServiceRunning(SpotifyPlayerService.class, getActivity()) && !isPlayerPlaying) {
             trackCurrentPosition = 0;
             getActivity().getApplicationContext().stopService(spotifyServiceIntent);
             getActivity().getApplicationContext().startService(spotifyServiceIntent);
-        }else if(!Utils.isServiceRunning(SpotifyPlayerService.class,getActivity())){
-            trackCurrentPosition  = 0;
+        } else if (!Utils.isServiceRunning(SpotifyPlayerService.class, getActivity())) {
+            trackCurrentPosition = 0;
             getActivity().getApplicationContext().startService(spotifyServiceIntent);
         }
-        if(spotifyPlayerService == null){
+        if (spotifyPlayerService == null) {
             Log.d(SpotifyPlayerFragment.class.getSimpleName(), "" + isServiceBounded);
             getActivity().getApplicationContext().bindService(spotifyServiceIntent, serviceConnection, Context.BIND_AUTO_CREATE);
         }
