@@ -35,6 +35,8 @@
             android:name=".ui.SpotifyPlayerActivity"
             android:label="@string/title_activity_spotify_player" >
         </activity>
+
+        <service android:name=".services.SpotifyPlayerService"/>
     </application>
 
 </manifest>

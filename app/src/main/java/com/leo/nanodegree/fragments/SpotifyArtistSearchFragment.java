@@ -1,10 +1,12 @@
 package com.leo.nanodegree.fragments;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -23,6 +25,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import com.leo.nanodegree.R;
 import com.leo.nanodegree.adapters.ArtistSearchAdapter;
+import com.leo.nanodegree.interfaces.OnSearchItemClickListener;
 import com.leo.nanodegree.ui.TopArtistSongsActivity;
 import com.leo.nanodegree.utils.Utils;
 
@@ -54,9 +57,20 @@ public class SpotifyArtistSearchFragment extends BaseListFragment {
     ListView artistAlbumsList;
 
     private ArtistSearchAdapter artistSearchAdapter;
+    private OnSearchItemClickListener onSearchItemClickListener;
 
     public static SpotifyArtistSearchFragment newInstance() {
         return new SpotifyArtistSearchFragment();
+    }
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        try {
+            onSearchItemClickListener = (OnSearchItemClickListener)activity;
+        }catch (ClassCastException e){
+            throw new ClassCastException(getActivity().getLocalClassName() + "must implement OnSearchItemClickListener");
+        }
     }
 
     @Override
@@ -171,11 +185,9 @@ public class SpotifyArtistSearchFragment extends BaseListFragment {
     }
 
     @OnItemClick(R.id.artist_search_list)
-    public void onItemClick(@Nullable AdapterView<?> adapterView, @Nullable View view, int i, long l) {
+    public void onItemClick(@NonNull AdapterView<?> adapterView, @Nullable View view, int i, long l) {
         Artist artist = (Artist) adapterView.getAdapter().getItem(i);
-        Intent topArtistSongsIntent = new Intent(getActivity(), TopArtistSongsActivity.class);
-        topArtistSongsIntent.putExtra("artist_id", artist.id);
-        startActivity(topArtistSongsIntent);
+        onSearchItemClickListener.onSearchItemClick(artist.id);
     }
 
 

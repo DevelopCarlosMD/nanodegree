@@ -25,7 +25,7 @@ public class SpotifyPlayerActivity extends BaseActivity {
             if(getIntent().getExtras() != null) {
                     SpotifyPlayerFragment spotifyPlayerFragment = new SpotifyPlayerFragment();
                     spotifyPlayerFragment.onPlayTracks(getIntent().getExtras().getString("list_items"), getIntent().getExtras().getInt("track_selected_position"));
-                    getSupportFragmentManager().beginTransaction().add(R.id.spotify_player_fragment, spotifyPlayerFragment).commit();
+                    getSupportFragmentManager().beginTransaction().replace(R.id.spotify_player_fragment, spotifyPlayerFragment).commit();
                 }
         }
     }

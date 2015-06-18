@@ -1,7 +1,9 @@
 package com.leo.nanodegree.fragments;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -96,25 +98,26 @@ public class TopArtistSongsFragment extends BaseListFragment implements OnSearch
                 if (response.getStatus() == 200) {
                     if (tracks != null && getActivity() != null) {
 
-                                progressDialog.dismiss();
-                                errorText.setVisibility(View.GONE);
-                                topArtistSongsAdapter.setItems(tracks.tracks);
+                        progressDialog.dismiss();
+                        errorText.setVisibility(View.GONE);
+                        topArtistSongsAdapter.setItems(tracks.tracks);
 
                     } else {
-                                topArtistSongsAdapter.clearData();
-                                progressDialog.dismiss();
-                                errorText.setVisibility(View.VISIBLE);
+                        topArtistSongsAdapter.clearData();
+                        progressDialog.dismiss();
+                        errorText.setVisibility(View.VISIBLE);
                     }
                 } else {
                     progressDialog.dismiss();
                     errorText.setVisibility(View.VISIBLE);
                 }
             }
+
             @Override
             public void failure(RetrofitError error) {
                 error.printStackTrace();
-                        progressDialog.dismiss();
-                        errorText.setVisibility(View.VISIBLE);
+                progressDialog.dismiss();
+                errorText.setVisibility(View.VISIBLE);
 
             }
         });
@@ -122,17 +125,31 @@ public class TopArtistSongsFragment extends BaseListFragment implements OnSearch
 
     @OnItemClick(R.id.top_artist_songs_list)
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-
-        Intent playerIntent = new Intent(getActivity(), SpotifyPlayerActivity.class);
         Gson gson = new GsonBuilder().create();
         Type trackAdapterType = new TypeToken<List<Track>>(){}.getType();
+
+        if(getTypeDevice()){
+            SpotifyPlayerFragment spotifyPlayerFragment = new SpotifyPlayerFragment();
+            spotifyPlayerFragment.onPlayTracks(gson.toJson(((TopArtistTracksAdapter)adapterView.getAdapter()).getItems(),trackAdapterType),i);
+            spotifyPlayerFragment.show(getActivity().getSupportFragmentManager(),"spotify_player");
+        }else{
+
+        Intent playerIntent = new Intent(getActivity(), SpotifyPlayerActivity.class);
+
         playerIntent.putExtra("list_items",gson.toJson(((TopArtistTracksAdapter)adapterView.getAdapter()).getItems(),trackAdapterType));
-        playerIntent.putExtra("track_selected_position",i);
+        playerIntent.putExtra("track_selected_position", i);
         startActivity(playerIntent);
+
+        }
     }
 
     @Override
     public void onSearchArtistTopTracks(String artistId) {
         getArtistTopTrack(artistId);
+    }
+
+    private boolean getTypeDevice(){
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("type_device", Context.MODE_PRIVATE);
+        return sharedPreferences.getBoolean("type",false);
     }
 }
