@@ -1,6 +1,7 @@
 package com.leo.nanodegree.ui;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 
@@ -28,9 +29,16 @@ public class SearcherActivity extends BaseActivity implements OnSearchItemClickL
             Intent topArtistSongsIntent = new Intent(SearcherActivity.this, TopArtistSongsActivity.class);
             topArtistSongsIntent.putExtra("artist_id", artistId);
             startActivity(topArtistSongsIntent);
+            saveTypeDevice(false);
         }else{
+            saveTypeDevice(true);
             topArtistSongsFragment.onSearchArtistTopTracks(artistId);
         }
 
+    }
+
+    private void saveTypeDevice(boolean isTablet){
+        SharedPreferences sharedPreferences = getSharedPreferences("type_device",MODE_PRIVATE);
+        sharedPreferences.edit().putBoolean("type",isTablet).apply();
     }
 }
