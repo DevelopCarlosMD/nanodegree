@@ -11,6 +11,8 @@ import com.leo.nanodegree.R;
 import com.squareup.picasso.Picasso;
 
 
+import butterknife.ButterKnife;
+import butterknife.InjectView;
 import kaaes.spotify.webapi.android.models.Track;
 
 /**
@@ -20,12 +22,11 @@ public class TopArtistTracksAdapter extends CommonAdapter<Track> {
 
     @Override
     public View getView(int i, View view, @Nullable ViewGroup viewGroup) {
-        TopArtistSongsHolder topArtistSongsHolder = new TopArtistSongsHolder();
+
+        TopArtistSongsHolder topArtistSongsHolder;
         if (view == null) {
             view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.top_artist_songs_row_layout, viewGroup, false);
-            topArtistSongsHolder.artistImage = (ImageView) view.findViewById(R.id.artist_image);
-            topArtistSongsHolder.artistSongName = (TextView) view.findViewById(R.id.artist_song_name);
-            topArtistSongsHolder.artistAlbumName = (TextView) view.findViewById(R.id.artist_album_name);
+            topArtistSongsHolder = new TopArtistSongsHolder(view);
             view.setTag(topArtistSongsHolder);
         } else {
             topArtistSongsHolder = (TopArtistSongsHolder) view.getTag();
@@ -43,8 +44,12 @@ public class TopArtistTracksAdapter extends CommonAdapter<Track> {
     }
 
     public static class TopArtistSongsHolder {
-        public ImageView artistImage;
-        public TextView artistSongName;
-        public TextView artistAlbumName;
+        @InjectView(R.id.artist_image) ImageView artistImage;
+        @InjectView(R.id.artist_song_name) TextView artistSongName;
+        @InjectView(R.id.artist_album_name) TextView artistAlbumName;
+
+        public TopArtistSongsHolder(View view){
+            ButterKnife.inject(this,view);
+        }
     }
 }

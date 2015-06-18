@@ -11,6 +11,8 @@ import com.leo.nanodegree.R;
 import com.squareup.picasso.Picasso;
 
 
+import butterknife.ButterKnife;
+import butterknife.InjectView;
 import kaaes.spotify.webapi.android.models.Artist;
 
 
@@ -23,29 +25,32 @@ public class ArtistSearchAdapter extends CommonAdapter<Artist> {
     @Override
     public View getView(int i, View view, @Nullable ViewGroup viewGroup) {
 
-        ArtistsSearchHolder ArtistsSearchHolder = new ArtistsSearchHolder();
+        ArtistsSearchHolder artistsSearchHolder;
         if (view == null) {
             view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.spotify_streamer_row_layout,viewGroup,false);
-            ArtistsSearchHolder.artistsImage = (ImageView) view.findViewById(R.id.artist_image);
-            ArtistsSearchHolder.artistsName = (TextView) view.findViewById(R.id.artist_name);
-            view.setTag(ArtistsSearchHolder);
+            artistsSearchHolder = new ArtistsSearchHolder(view);
+            view.setTag(artistsSearchHolder);
         }else{
-            ArtistsSearchHolder = (ArtistsSearchHolder)view.getTag();
+            artistsSearchHolder = (ArtistsSearchHolder)view.getTag();
         }
 
         if(getItems().get(i).images.size() >0 && getItems().get(i).images.get(1).url != null) {
             Picasso.with(viewGroup.getContext())
                     .load(getItems().get(i).images.get(1).url)
                     .resize(200, 200)
-                    .into(ArtistsSearchHolder.artistsImage);
+                    .into(artistsSearchHolder.artistsImage);
         }
-        ArtistsSearchHolder.artistsName.setText(getItems().get(i).name);
+        artistsSearchHolder.artistsName.setText(getItems().get(i).name);
 
         return view;
     }
 
     public static class ArtistsSearchHolder {
-        public ImageView artistsImage;
-        public TextView artistsName;
+        @InjectView(R.id.artist_image) ImageView artistsImage;
+        @InjectView(R.id.artist_name) TextView artistsName;
+
+        public ArtistsSearchHolder(View view){
+            ButterKnife.inject(this,view);
+        }
     }
 }

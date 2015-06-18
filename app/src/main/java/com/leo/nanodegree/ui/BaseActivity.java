@@ -24,9 +24,9 @@ public abstract class BaseActivity extends AppCompatActivity {
 
         if (toolbar != null) {
             setSupportActionBar(toolbar);
-            if (activeBackButton()) {
-                getSupportActionBar().setHomeButtonEnabled(activeBackButton());
-                getSupportActionBar().setDisplayHomeAsUpEnabled(activeBackButton());
+            if (activateBackButton()) {
+                getSupportActionBar().setHomeButtonEnabled(activateBackButton());
+                getSupportActionBar().setDisplayHomeAsUpEnabled(activateBackButton());
             }
         }
 
@@ -35,9 +35,17 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     abstract int contentViewId();
 
-    abstract boolean activeBackButton();
+    abstract boolean activateBackButton();
 
-    abstract void onCreateActivity(@Nullable Bundle savedInstanceState);
+    protected void onCreateActivity(@Nullable Bundle savedInstanceState){}
 
-
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                return activateBackButton();
+        }
+        return super.onOptionsItemSelected(item);
+    }
 }
